@@ -1,0 +1,164 @@
+<html><head>
+<link rel="stylesheet" type="text/css" href="style.css">
+<title></title></head><body style="background-color: #cfcfcf;">
+<div style="background-color: gray; width: 300px; float: left">
+    <h1>RPG Knight</h1>
+    <div id="coins" style="padding: 4px;">Coins: 0</div>
+    <div id="level" style="padding: 4px;">Level: 1</div>
+    <div id="xp" style="padding: 4px;">Xp: 0/100</div>
+    <div style="float: left; width: 150px;" id="loadout">
+        <div id="weaponEquip">Weapon: </div>
+        <div id="armorEquip">Armor: </div>
+        <div id="neckEquip">Amulet: </div>
+        <div id="ringEquip">Ring: </div>
+    </div>
+    <div>
+        <button style="width: 100px; height: 50px;" onClick="saveGame()">Save</button>
+        <button style="width: 100px; height: 50px;" onClick="loadGame()">Load</button>
+    </div>
+</div>
+<div class="panel" style="width: relative; height: relative; background-color: black; float: left; padding: 4px;">
+    <div style="width: 500px; height: 40px; background-color: gray; float: left;">
+        <button onClick="changeTab('Main')" style="height: 40px;">Fight</button>
+        <button onClick="changeTab('Shop')" style="height: 40px;">Shop</button>
+        <button onClick="changeTab('Train')" style="height: 40px;">Train</button>
+        <button onClick="changeTab('Inventory')" style="height: 40px;">Inventory</button>
+        <button onClick="changeTab('Teleport')" style="height: 40px;">Areas</button>
+        <button onClick="changeTab('settings')" style="height: 40px; float: right;">Settings</button>
+    </div><br>
+        <div style="float: left; background-color: gray; padding: 4px;">
+            <div class="selected-tab" id="Main">
+                <div style="float: left; width: 220px;">
+                    <button onClick="setEnemy()">Summon an Enemy</button><button onClick="setBoss()">Boss Fight</button><br>
+                    <img id="enemyIcon" src="" style="width: 100px; height: 100px;">
+                    <div id="name"></div><br/>
+                    <div id="enemyLevel"></div><br>
+                    <div id="health"></div><br/>
+                    <div id="power"></div><br/>
+                    <div style="background-color: #efefef; width: relative;"><button onClick="fight(Attacks.Punch)" style="margin: 4px;">Punch</button></div>
+                    <div>you</div><br>
+                    <div id="urHp">Health: 100</div><br>
+                    <div id="urPower">Power: 5</div><br>
+                    <div id="urDef">Defense: 5</div><br>
+                    <button onClick="resetHp()">reset health</button>
+                    <div style="display: inline-block;">This costs 5 coins times your level. If your health is 0 or lower it will cost 10 times your level</div>
+                </div>
+                <div id="invUpdate" style="background-color: gray; float: right;">
+                </div>
+            </div>
+            <div class="hidden" id="Shop">
+                <h2>SHOP</h2>
+                <button style="height: 40px;" onClick="switchShop('itemShop')">Equipments</button>
+                <button style="height: 40px;" onClick="switchShop('skillShop')">Training Items</button>
+                <div id="itemShop" class="selected-shop">
+                    <table>
+                        <tr>
+                            <td>Name</td>
+                            <td>effect</td>
+                            <td>Level Required</td>
+                            <td>price</td>
+                        </tr>
+                        <tr class="hidden" id="ShopTemplate">
+                            <td>
+                                <button class="shop-button tooltip" onClick="buy('Armor','Wooden Armor')" id="Armor">
+                                    <div class="name">Armor</div>
+                                    <span class="tooltiptext">An armor</span>
+                                </button>
+                            </td>
+                            <td class="effect">+5 Defense</td>
+                            <td class="level">1</td>
+                            <td class="price">50 Coins</td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="skillShop" class="hidden">
+                    <table>
+                        <tr>
+                            <td>Name</td>
+                            <td>effect</td>
+                            <td>price</td>
+                        </tr>
+                        <tr id="skillShopTemplate" class="hidden">
+                            <td>
+                                <button class="shop-button tooltip" onClick="buySkill('Dumbell', 'Dumbell')" id="test">
+                                    <div class="name">Dumbell</div>
+                                    <span class="tooltiptext">Dumbell</span>
+                                </button>
+                            </td>
+                            <td class="effect">x2 Strength</td>
+                            <td class="price">1000 Coins</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="hidden" id="Train">
+                <h2>Train</h2>
+                <table>
+                    <tr>
+                        <td>Name</td>
+                        <td>level</td>
+                        <td>effect</td>
+                        <td>xp</td>
+                        <td>xp Need</td>
+                    </tr>
+                    <tr class="hidden" id="skill2">
+                        <td>
+                        <div class="skill-button tooltip" onClick="train('skill2','Strength')">
+                            <div id="progress" style="background-color: green; width: 50%;"></div>
+                            <div class="name">Armor</div>
+                            <span class="tooltiptext">An armor</span>
+                        </div>
+                        </td>
+                        <td class="level">0</td>
+                        <td class="effect">x1.00</td>
+                        <td class="xp">10</td>
+                        <td class="xpNeed">100</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="hidden" style="width: 500px;" id="Inventory">
+                <div id="items">
+                    <div id="inv Stick" style="border: 4px solid white; margin: 2px; float: left;" class="inv">
+                        <div class="tooltip">
+                            <img src="img/Stick.jpg" class="icon">
+                            <span class="tooltiptext">a stick</span>
+                        </div>
+                        <div>
+                            <div class="level">Level: 1</div>
+                            <div class="atk">Attack: 1</div>
+                            <div class="def">Defense: 0</div>
+                            <div class="hp">Health: 0</div>
+                        </div>
+                        <div class="inv-button equip" onClick="equip('Stick')">equip</div>
+                        <div class="inv-button sell" onClick="sellItem('Stick')">sell</div>
+                    </div>
+                </div>
+            </div>
+            <div id="Teleport" class="hidden">
+                <table>
+                    <tr>
+                        <td>Area</td>
+                        <td>level requirement</td>
+                    </tr>
+                    <tr id="Forest">
+                        <td>
+                            <button onClick="switchArea('Forest')" style="width: 70px; height: 50px;" class="button">Forest</button>
+                        </td>
+                        <td class="levelReq">1+</td>
+                    </tr>
+                </table>
+            </div>
+            <div id="settings" style="width: 500px;" class="hidden">
+                <button style="margin: 3px;" onClick="importData()">Import</button>
+                <button style="margin: 3px;" onClick="exportData()">Export</button>
+                <form style="margin-top: 16px"> 
+                    <input id="importExportBox" type="text" style="width:300px; height:30px"></input>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="wasd.js" type="text/javascript"></script>
+<script src="class.js" type="text/javascript"></script>
+<script src="HackTimer.js" type="text/javascript"></script>
+</html>
